@@ -103,4 +103,17 @@ class GameControllerTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"001", "012", "100"})
+    @DisplayName("사용자가 입력한 값에 0이 포함이 되어있으면 예외가 발생한다.")
+    void shouldThrowExceptionWhenEnteredValueContainsZero(String input) {
+        // given
+        System.setIn(createUserInput(input));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askAnswer())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
+    }
 }
