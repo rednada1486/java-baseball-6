@@ -20,7 +20,7 @@ public class GameController {
         while (isContinue) {
             playGame();
             printGameEndMessage();
-            isContinue = askContinue();
+            isContinue = askContinueUntilPass();
         }
     }
 
@@ -29,6 +29,10 @@ public class GameController {
         validateContinue(userInput);
 
         return "1".equals(userInput);
+    }
+
+    public boolean askContinueUntilPass() {
+        return receiveInputUntilPass(this::askContinue);
     }
 
     private void validateContinue(String userInput) {
@@ -49,9 +53,13 @@ public class GameController {
         return userAnswerToUserNumbers(userAnswer);
     }
 
+    public List<Integer> askAnswerUntilPass() {
+        return receiveInputUntilPass(this::askAnswer);
+    }
+
     public void askUntilCorrectAnswer(Game game) {
         while (!game.isUserWin()) {
-            List<Integer> userNumbers = askAnswer();
+            List<Integer> userNumbers = askAnswerUntilPass();
             GameResult gameResult = game.makeGameResult(userNumbers);
             printGameResult(gameResult);
         }
@@ -87,5 +95,20 @@ public class GameController {
 
     private List<Integer> userAnswerToUserNumbers(String userInput) {
         return userInput.chars().map(Character::getNumericValue).boxed().collect(Collectors.toList());
+    }
+
+    public <T> T receiveInputUntilPass(ExceptionSupplier<T> inputMethod) {
+        T result;
+
+        while (true) {
+            try {
+                result = inputMethod.get();
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return result;
     }
 }
