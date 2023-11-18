@@ -2,6 +2,7 @@ package baseball.controller;
 
 import baseball.domain.Game;
 import baseball.domain.GameResult;
+import baseball.view.ErrorMessage;
 import baseball.view.InputView;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import static baseball.service.NumberGenerator.pickNumbersInRangeWithoutDuplicates;
 import static baseball.view.ErrorMessage.NUMBER_COMBINATION_IS_INCORRECT;
 import static baseball.view.InputView.readUserAnswer;
+import static baseball.view.OutputView.printGameEndMessage;
 import static baseball.view.OutputView.printGameResult;
 
 public class GameController {
@@ -18,6 +20,7 @@ public class GameController {
 
         while (isContinue) {
             playGame();
+            printGameEndMessage();
             isContinue = askContinue();
         }
     }
@@ -31,7 +34,7 @@ public class GameController {
 
     private void validateContinue(String userInput) {
         if (!userInput.equals("1") && !userInput.equals("2")) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ErrorMessage.ONLY_ONE_OR_TWO.getName());
         }
     }
 
