@@ -7,6 +7,7 @@ import static baseball.service.GameResultCalculator.caculateGameResult;
 public class Game {
     private final List<Integer> computerNumbers;
     private boolean isUserWin = false;
+    private int tryCount = 0;
 
     public Game(List<Integer> computerNumbers) {
         this.computerNumbers = computerNumbers;
@@ -14,6 +15,8 @@ public class Game {
 
     public GameResult makeGameResult(List<Integer> userNumbers) {
         GameResult gameResult = caculateGameResult(computerNumbers, userNumbers);
+
+        tryCount += 1;
 
         if (gameResult.equals(new GameResult(0, 3, 0))) {
             isUserWin = true;
@@ -30,4 +33,7 @@ public class Game {
         return isUserWin;
     }
 
+    public int getTryCount() {
+        return tryCount;
+    }
 }

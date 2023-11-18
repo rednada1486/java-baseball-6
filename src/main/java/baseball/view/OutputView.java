@@ -14,7 +14,15 @@ public class OutputView {
         System.out.println(GAME_END_MESSAGE.getOutputMessage());
     }
 
+    public static void printGameEndMessageWithTryCount(int tryCount) {
+        System.out.println(tryCount + "번의 시도 끝에 " + GAME_END_MESSAGE.getOutputMessage());
+    }
+
     public static void printGameResult(GameResult gameResult) {
         System.out.println(gameResult.toString());
+    }
+
+    public static void printGameResultWithTryCount(GameResult gameResult, int tryCount) {
+        System.out.println(gameResult.toString() + " (시도횟수:" + tryCount + ")");
     }
 }

@@ -19,7 +19,6 @@ public class GameController {
 
         while (isContinue) {
             playGame();
-            printGameEndMessage();
             isContinue = askContinueUntilPass();
         }
     }
@@ -45,6 +44,7 @@ public class GameController {
         printGameStartMessage();
         Game game = new Game(pickNumbersInRangeWithoutDuplicates(1, 9, 3));
         askUntilCorrectAnswer(game);
+        printGameEndMessageWithTryCount(game.getTryCount());
     }
 
     public List<Integer> askAnswer() {
@@ -61,7 +61,7 @@ public class GameController {
         while (!game.isUserWin()) {
             List<Integer> userNumbers = askAnswerUntilPass();
             GameResult gameResult = game.makeGameResult(userNumbers);
-            printGameResult(gameResult);
+            printGameResultWithTryCount(gameResult, game.getTryCount());
         }
     }
 
