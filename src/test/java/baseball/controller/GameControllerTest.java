@@ -6,6 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,7 +15,9 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
 
+import static baseball.view.ErrorMessage.NUMBER_COMBINATION_IS_INCORRECT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GameControllerTest {
     private final PrintStream standardOut = System.out;
@@ -72,5 +76,57 @@ class GameControllerTest {
 
     public int countSomeWord(String target, String someWord) {
         return target.split(someWord).length - 1;
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"a", "1a", "1a#"})
+    @DisplayName("사용자가 입력한 값이 숫자가 아니면 예외가 발생한다.")
+    void shouldThrowExceptionWhenEnteredValueIsNotNumber(String input) {
+        // given
+        System.setIn(createUserInput(input));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askAnswer())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1", "12"})
+    @DisplayName("사용자가 입력한 값이 3자리가 아니면 예외가 발생한다.")
+    void shouldThrowExceptionWhenEnteredValueLengthIsNotThree(String input) {
+        // given
+        System.setIn(createUserInput(input));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askAnswer())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"001", "012", "100"})
+    @DisplayName("사용자가 입력한 값에 0이 포함이 되어있으면 예외가 발생한다.")
+    void shouldThrowExceptionWhenEnteredValueContainsZero(String input) {
+        // given
+        System.setIn(createUserInput(input));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askAnswer())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"112", "122", "111"})
+    @DisplayName("사용자가 입력한 값에 중복된 숫자가 있으면 예외가 발생한다.")
+    void shouldThrowExceptionWhenEnteredValueHasDuplicateNumber(String input) {
+        // given
+        System.setIn(createUserInput(input));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askAnswer())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
     }
 }
