@@ -2,6 +2,8 @@ package baseball.controller;
 
 import baseball.domain.Game;
 import baseball.domain.GameResult;
+import baseball.view.ErrorMessage;
+import baseball.view.InputView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +11,7 @@ import java.util.stream.Collectors;
 import static baseball.service.NumberGenerator.pickNumbersInRangeWithoutDuplicates;
 import static baseball.view.ErrorMessage.NUMBER_COMBINATION_IS_INCORRECT;
 import static baseball.view.InputView.readUserAnswer;
-import static baseball.view.OutputView.printGameResult;
+import static baseball.view.OutputView.*;
 
 public class GameController {
     public void play() {
@@ -17,15 +19,26 @@ public class GameController {
 
         while (isContinue) {
             playGame();
+            printGameEndMessage();
             isContinue = askContinue();
         }
     }
 
-    private boolean askContinue() {
-        return false;
+    public boolean askContinue() {
+        String userInput = InputView.readContinue();
+        validateContinue(userInput);
+
+        return "1".equals(userInput);
+    }
+
+    private void validateContinue(String userInput) {
+        if (!userInput.equals("1") && !userInput.equals("2")) {
+            throw new IllegalArgumentException(ErrorMessage.ONLY_ONE_OR_TWO.getName());
+        }
     }
 
     public void playGame() {
+        printGameStartMessage();
         Game game = new Game(pickNumbersInRangeWithoutDuplicates(1, 9, 3));
         askUntilCorrectAnswer(game);
     }

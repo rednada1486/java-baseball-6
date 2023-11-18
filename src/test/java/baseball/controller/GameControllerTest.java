@@ -16,6 +16,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 import static baseball.view.ErrorMessage.NUMBER_COMBINATION_IS_INCORRECT;
+import static baseball.view.ErrorMessage.ONLY_ONE_OR_TWO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -128,5 +129,44 @@ class GameControllerTest {
         assertThatThrownBy(() -> gameController.askAnswer())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
+    }
+
+
+    @Test
+    @DisplayName("askContinue 메서드는 1을 입력받은 경우 true를 반환한다.")
+    void askContinueShouldReturnTrueWhenInputtedNumberOne() {
+        // given
+        System.setIn(createUserInput("1"));
+
+        // when
+        boolean result = gameController.askContinue();
+
+        // then
+        assertThat(result).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("askContinue 메서드는 2를 입력받은 경우 false를 반환한다.")
+    void askContinueShouldReturnFalseWhenInputtedNumberTwo() {
+        // given
+        System.setIn(createUserInput("2"));
+
+        // when
+        boolean result = gameController.askContinue();
+
+        // then
+        assertThat(result).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("askContinue 메서드는 잘못된 값을 입력받은 경우 예외를 발생시킨다.")
+    void askContinueShouldThrowExceptionWhenWrongValueIsInputted() {
+        // given
+        System.setIn(createUserInput("3"));
+
+        // when, then
+        assertThatThrownBy(() -> gameController.askContinue())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ONLY_ONE_OR_TWO.getName());
     }
 }
