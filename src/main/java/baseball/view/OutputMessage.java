@@ -5,13 +5,13 @@ public enum OutputMessage {
     GAME_END_MESSAGE("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
 
 
-    private final String name;
+    private final String outputMessage;
 
     OutputMessage(String name) {
-        this.name = name;
+        this.outputMessage = name;
     }
 
-    public String getName() {
-        return name;
+    public String getOutputMessage() {
+        return outputMessage;
     }
 }
