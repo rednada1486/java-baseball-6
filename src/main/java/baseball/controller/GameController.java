@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 import static baseball.service.NumberGenerator.pickNumbersInRangeWithoutDuplicates;
 import static baseball.view.ErrorMessage.NUMBER_COMBINATION_IS_INCORRECT;
 import static baseball.view.InputView.readUserAnswer;
-import static baseball.view.OutputView.printGameEndMessage;
-import static baseball.view.OutputView.printGameResult;
+import static baseball.view.OutputView.*;
 
 public class GameController {
     public void play() {
@@ -39,6 +38,7 @@ public class GameController {
     }
 
     public void playGame() {
+        printGameStartMessage();
         Game game = new Game(pickNumbersInRangeWithoutDuplicates(1, 9, 3));
         askUntilCorrectAnswer(game);
     }
