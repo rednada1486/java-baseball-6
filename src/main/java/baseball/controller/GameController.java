@@ -2,6 +2,7 @@ package baseball.controller;
 
 import baseball.domain.Game;
 import baseball.domain.GameResult;
+import baseball.view.InputView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,16 @@ public class GameController {
     }
 
     private boolean askContinue() {
-        return false;
+        String userInput = InputView.readContinue();
+        validateContinue(userInput);
+
+        return "1".equals(userInput);
+    }
+
+    private void validateContinue(String userInput) {
+        if (userInput.equals("1") || userInput.equals("2")) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void playGame() {
