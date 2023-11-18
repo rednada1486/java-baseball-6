@@ -129,4 +129,31 @@ class GameControllerTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(NUMBER_COMBINATION_IS_INCORRECT.getName());
     }
+
+
+    @Test
+    @DisplayName("askContinue 메서드는 1을 입력받은 경우 true를 반환한다.")
+    void askContinueShouldReturnTrueWhenInputtedNumberOne() {
+        // given
+        System.setIn(createUserInput("1"));
+
+        // when
+        boolean result = gameController.askContinue();
+
+        // then
+        assertThat(result).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("askContinue 메서드는 2를 입력받은 경우 false를 반환한다.")
+    void askContinueShouldReturnFalseWhenInputtedNumberTwo() {
+        // given
+        System.setIn(createUserInput("2"));
+
+        // when
+        boolean result = gameController.askContinue();
+
+        // then
+        assertThat(result).isEqualTo(false);
+    }
 }

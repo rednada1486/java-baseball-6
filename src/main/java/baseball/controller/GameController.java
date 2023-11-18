@@ -22,7 +22,7 @@ public class GameController {
         }
     }
 
-    private boolean askContinue() {
+    public boolean askContinue() {
         String userInput = InputView.readContinue();
         validateContinue(userInput);
 
@@ -30,7 +30,7 @@ public class GameController {
     }
 
     private void validateContinue(String userInput) {
-        if (userInput.equals("1") || userInput.equals("2")) {
+        if (!userInput.equals("1") && !userInput.equals("2")) {
             throw new IllegalArgumentException();
         }
     }
